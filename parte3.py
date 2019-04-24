@@ -35,7 +35,7 @@ four = four[0:(length//2)]
 #Calculates the frequency at each point in Hz
 each_freq = np.arange(0, (length/2), 1.0) * (rate)
 
-plt2.plot(each_freq/1000, 10*np.log10(four))
+plt2.plot(each_freq/1000, 10*np.log10(four.real))
 plt2.xlabel("Frequencia (kHz)")
 plt2.ylabel("Potência (dB)")
 plt2.show()
