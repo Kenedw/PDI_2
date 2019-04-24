@@ -16,12 +16,12 @@ print(audData)  #Data of the signal
 
 print(audData.shape[0] / rate ) #length of the signal
 
-length = audData.shape[0] // rate #length of the audio signal
+length = len(audData) #length of the audio signal
 
 #channel1 = audData[:,0]     #channel of the left
 #channel2 = audData[:,1]     #channel of the right
 
-four = fft.fft(audData)
+four = fft.rfft(audData)
 #four.astype('complex')
 
 plt.plot(four.real)
@@ -33,15 +33,10 @@ four = four[0:(length//2)]
 #four = four/float(length)
 
 #Calculates the frequency at each point in Hz
-each_freq = np.arange(0, (length/2), 1.0) * (rate)
+each_freq = np.arange(0, (length//2), 1.0) * (rate)
 
 plt2.plot(each_freq/1000, 10*np.log10(four.real))
 plt2.xlabel("Frequencia (kHz)")
 plt2.ylabel("Potência (dB)")
 plt2.show()
-
-
-
-    
-    
 
