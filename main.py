@@ -91,9 +91,7 @@ def zigzag(rows,columns,matrix):
 
 if __name__ == "__main__":
 
-  # fileInput = sys.argv[1]
-  # fileOutput = sys.argv[2]
-  imagem = abreImagem("fox.jpg")
+  imagem = abreImagem("lena.jpg")
   imagem = cinzaScale(imagem)
   width, height = imagem.size
   ParcialDCTCol = []
@@ -111,15 +109,17 @@ if __name__ == "__main__":
   for i in range(height):
     FullDCT.append(MyDCT(ParcialDCTCol[i]))  #Segunda DCT (DCT da coluna)
 
-  #filtro n
-  # SzigzagList = []
-  # zigzagList = zigzag(height,width,FullDCT)
-  # for i in zigzagList:
-  #   SzigzagList +=i
+  
+  SzigzagList = []
+  zigzagList = zigzag(height,width,FullDCT)
+  for i in zigzagList: #fazendo join pra juntar td
+    SzigzagList +=i
   # print(SzigzagList)
-  n = 200
-  for i in range(width):
-    for j in range(height):
+
+
+  n = 2
+  for i in range(len(FullDCT)):
+    for j in range(len(FullDCT[0])):
       if(i+j>n):
         FullDCT[j][i] = 0
 
@@ -134,31 +134,10 @@ if __name__ == "__main__":
   pixel = newImage.load()
   for i in range(height):
     for j in range(width):
-      pixel[j,i] = (int(iDCT[j][i]/1000),int(iDCT[j][i]/1000),int(iDCT[j][i]/1000))
-  salvaImagem(newImage,"test.jpg")
+      pixel[j,i] = (int(iDCT[j][i]/10000),int(iDCT[j][i]/10000),int(iDCT[j][i]/10000))
+  salvaImagem(newImage,str(n)+"_output.jpg")
 
 
   plt.ylabel('DCT Row X Col')
-  plt.plot(FullDCT)
+  plt.plot(SzigzagList)
   plt.show()
-
-
-  # while(True):
-  #   imagem = abreImagem(fileInput)
-  #   MenuSelect = input(
-  #   " _____                                           _          ____  _     _ _       _      _        _                           \n"
-  #   + "|  _  |___ ___ ___ ___ ___ ___ ___ _____ ___ ___| |_ ___   |    \|_|___|_| |_ ___| |   _| |___   |_|_____ ___ ___ ___ ___ ___ \n"
-  #   + "|   __|  _| . |  _| -_|_ -|_ -| .'|     | -_|   |  _| . |  |  |  | | . | |  _| .'| |  | . | -_|  | |     | .'| . | -_|   |_ -|\n"
-  #   + "|__|  |_| |___|___|___|___|___|__,|_|_|_|___|_|_|_| |___|  |____/|_|_  |_|_| |__,|_|  |___|___|  |_|_|_|_|__,|_  |___|_|_|___|\n"
-  #   + "                                                                   |___|                                     |___|            \n\n\n\n"
-  #   + "\t+---+-------------------------------------------------------+\n"
-  #   + "\t|   |           Digite o numero da opção desejada           |\n"
-  #   + "\t+---+-------------------------------------------------------+\n"
-  #   + "\t| 1 |                                                       |\n"
-  #   + "\t| 2 |                                                       |\n"
-  #   + "\t| 3 |                                                       |\n"
-  #   )
-  #   if(MenuSelect == '1'):
-  #     break
-  #   elif(MenuSelect == '0'):
-  #     break

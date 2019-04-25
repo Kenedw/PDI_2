@@ -1,42 +1,71 @@
 #required libraries
 import scipy.io.wavfile
-import pydub
 from numpy import fft as fft 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt2 
 
+import numpy
+import numpy.fft
+from numpy import *
+
+import scipy
+from scipy.fftpack import *
+
+# Discrete Cosine Transforms (DCT)
+def dct(vector):
+  result = []
+  factor = math.pi / len(vector)
+  for i in range(len(vector)):
+    soma = 0.0
+    for (j, val) in enumerate(vector):
+      soma += val * math.cos((j + 0.5) * i * factor)
+    result.append(soma)
+  return result
+
+def idct(vector):
+  result = []
+  factor = math.pi / len(vector)
+  for i in range(len(vector)):
+    soma = vector[0] / 2.0
+    for j in range(1, len(vector)):
+      soma += vector[j] * math.cos(j * (i + 0.5) * factor)
+    result.append(soma)
+    return result
+
 #a temp folder for downloads
 temp_folder="/Users/LMI/Documents/PDI/"
 
-rate,audData=scipy.io.wavfile.read(temp_folder+"audio.wav")
+rate,audData=scipy.io.wavfile.read(temp_folder+"a.wav")
 
 print(rate)     #Samples per seconds of the signal
 print(audData)  #Data of the signal
 
-print(audData.shape[0] / rate ) #length of the signal
-
 length = len(audData) #length of the audio signal
 
-#channel1 = audData[:,0]     #channel of the left
-#channel2 = audData[:,1]     #channel of the right
+channel1 = audData[:,0]     #channel of the left
+channel2 = audData[:,1]     #channel of the right
 
-four = fft.rfft(audData)
-#four.astype('complex')
+#aplica DCT
+four = dct(channel1)
 
-plt.plot(four.real)
-plt.xlabel('K')
-plt.ylabel('Amplitude')
-plt.show()
+plt.figure(1)
+plt.plot(four)
 
-four = four[0:(length//2)]
-#four = four/float(length)
 
-#Calculates the frequency at each point in Hz
-each_freq = np.arange(0, (length//2), 1.0) * (rate)
+#desloca
+x = 500
+audishift1 = roll(four,x)
+#audishift2 = roll(channel2,x)
 
-plt2.plot(each_freq/1000, 10*np.log10(four.real))
-plt2.xlabel("Frequencia (kHz)")
-plt2.ylabel("Potência (dB)")
+if(x>0 and x<rate):
+  for i in range(x):
+    print(i)
+    audishift1[i] = 0
+    #audishift2[i] = 0
+
+print(audishift1)
+plt.figure(2)
+plt.plot(audishift1)
 plt2.show()
 
